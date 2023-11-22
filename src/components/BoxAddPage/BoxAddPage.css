@@ -1,0 +1,45 @@
+.box-add-container {
+    font-family: 'Arial', sans-serif;
+    padding: 20px;
+  }
+  
+  .box-add-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .box-add-header a {
+    text-decoration: none;
+    color: #000;
+    font-size: 24px;
+  }
+  
+  .box-add-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .box-add-form input,
+  .box-add-form textarea {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    font-size: 16px;
+  }
+  
+  .box-add-form button {
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+  }
+  
+  .box-add-form button:hover {
+    background-color: #45a049;
+  }
+  

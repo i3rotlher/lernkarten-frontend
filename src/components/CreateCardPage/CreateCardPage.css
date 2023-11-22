@@ -1,0 +1,45 @@
+.create-card-container {
+    font-family: 'Arial', sans-serif;
+    padding: 20px;
+  }
+  
+  .create-card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .create-card-header a {
+    text-decoration: none;
+    color: #000;
+    font-size: 20px;
+  }
+  
+  .create-card-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .create-card-form input,
+  .create-card-form textarea {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    font-size: 16px;
+  }
+  
+  .create-card-form button {
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+  }
+  
+  .create-card-form button:hover {
+    background-color: #45a049;
+  }
+  

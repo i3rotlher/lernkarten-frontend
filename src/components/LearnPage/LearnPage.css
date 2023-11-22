@@ -1,0 +1,55 @@
+.learn-container {
+    font-family: 'Arial', sans-serif;
+    padding: 20px;
+  }
+  
+  .learn-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .learn-header a {
+    text-decoration: none;
+    color: #000;
+    font-size: 20px;
+  }
+  
+  .delete-btn {
+    background-color: red;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .card {
+    background-color: #f0f0f0;
+    margin: 20px 0;
+    padding: 20px;
+    border-radius: 5px;
+  }
+  
+  .card-actions {
+    display: flex;
+    justify-content: space-around;
+  }
+  
+  .known-btn,
+  .unknown-btn {
+    background-color: #4CAF50; /* Grün für "gewusst" */
+    color: white;
+    padding: 15px;
+    border: none;
+    border-radius: 50%; /* Kreisförmige Buttons */
+    font-size: 24px;
+    cursor: pointer;
+  }
+  
+  .unknown-btn {
+    background-color: #FFA500; /* Orange für "nicht gewusst" */
+  }
+  
+  /* Weitere Styling-Details hinzufügen, um die genaue Übereinstimmung mit Ihrem Design zu erreichen */
+  

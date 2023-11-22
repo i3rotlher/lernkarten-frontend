@@ -1,0 +1,64 @@
+.home-container {
+    font-family: 'Arial', sans-serif;
+    text-align: center;
+    margin-top: 50px;
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .delete-account-btn {
+    background-color: red;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .boxes {
+    text-align: left;
+    margin: 0 auto;
+  }
+  
+  .box {
+    background-color: #f0f0f0;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 5px;
+  }
+  
+  .progress {
+    background-color: #ddd;
+    border-radius: 5px;
+    overflow: hidden;
+  }
+  
+  .progress-bar {
+    background-color: #4CAF50;
+    padding: 10px 0;
+    color: white;
+    text-align: center;
+    border-radius: 5px;
+  }
+  
+  .add-box-btn {
+    background-color: #000;
+    color: white;
+    padding: 20px;
+    border-radius: 50%;
+    font-size: 24px;
+    border: none;
+    cursor: pointer;
+    position: fixed; /* Verwenden Sie 'fixed', um den Button relativ zum Viewport zu positionieren */
+    bottom: 20px;
+    left: 50%; /* Setzen Sie den Button in die Mitte der Seite */
+    transform: translateX(-50%); /* Verschieben Sie den Button zurück um seine eigene Hälfte, um echtes Zentrieren zu erreichen */
+  }  
+  
+  /* Weiteres Styling nach Bedarf hinzufügen */
+  
