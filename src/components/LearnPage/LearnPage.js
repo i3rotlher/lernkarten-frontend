@@ -22,7 +22,9 @@ const LearnPage = () => {
         }
 
         const cardsData = await response.json();
-        setCards(cardsData);
+        // Filtern Sie die Karten, um nur diejenigen zu behalten, die noch nicht gewusst sind
+        const unknownCards = cardsData.filter(card => !card.known);
+        setCards(unknownCards);
       } catch (error) {
         console.error('Fehler:', error);
         navigate('/');
