@@ -1,9 +1,19 @@
 import React, { useState } from 'react';
-import './BoxAddPage.css'; // Stellen Sie sicher, dass Sie eine entsprechende CSS-Datei erstellen
+import './BoxAddPage.css';
+import { useNavigate } from 'react-router-dom';
 
 const BoxAddPage = () => {
   const [boxName, setBoxName] = useState('');
   const [description, setDescription] = useState('');
+  const navigate = useNavigate();
+
+  const parseJwt = (token) => {
+    try {
+      return JSON.parse(atob(token.split('.')[1]));
+    } catch (e) {
+      return null;
+    }
+  };
 
   const handleBoxNameChange = (event) => {
     setBoxName(event.target.value);
@@ -13,11 +23,42 @@ const BoxAddPage = () => {
     setDescription(event.target.value);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    // Logik zum Hinzufügen der Box
-    console.log('Box erstellen mit:', boxName, description);
-    // Hier würden Sie die Logik implementieren, um die Daten an Ihr Backend zu senden
+
+    const token = localStorage.getItem('token');
+    const user = parseJwt(token);
+    if (!user || !user.sub) {
+      console.error('Fehler: Benutzer ist nicht eingeloggt oder die ID ist nicht verfügbar.');
+      return;
+    }
+
+    const newBox = {
+      name: boxName,
+      beschreibung: description,
+      userId: user.sub, // Setzen der Benutzer-ID aus dem Token
+      karteikartenIds: []
+    };
+
+    try {
+      const response = await fetch('http://localhost:8080/karteiboxen/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify(newBox)
+      });
+
+      if (response.ok) {
+        navigate('/'); // Zurück zur Homepage nach erfolgreicher Erstellung
+      } else {
+        // Fehlerbehandlung, z.B. Anzeige einer Fehlermeldung
+        console.error('Fehler beim Erstellen der Box');
+      }
+    } catch (error) {
+      console.error('Netzwerkfehler:', error);
+    }
   };
 
   return (

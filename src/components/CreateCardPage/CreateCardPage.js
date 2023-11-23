@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import './CreateCardPage.css'; // Stellen Sie sicher, dass Sie eine entsprechende CSS-Datei erstellen
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const CreateCardPage = () => {
   const [question, setQuestion] = useState('');
   const [answer, setAnswer] = useState('');
   const navigate = useNavigate();
+  const { boxId } = useParams();
 
   const handleQuestionChange = (event) => {
     setQuestion(event.target.value);
@@ -15,10 +16,35 @@ const CreateCardPage = () => {
     setAnswer(event.target.value);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    // Logik zum Hinzufügen der Karteikarte
-    navigate('/box-detail'); // Zurück zur Detailseite der Box
+
+    const newCard = {
+      frage: question,
+      antwort: answer,
+      karteiboxId: boxId, // Die Box-ID aus den URL-Parametern
+    };
+
+    try {
+      const response = await fetch('http://localhost:8080/karteikarten/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        },
+        body: JSON.stringify(newCard)
+      });
+
+      if (!response.ok) {
+        throw new Error('Fehler beim Hinzufügen der Karteikarte');
+      }
+
+      // Erfolgsmeldung oder Weiterleitung
+      navigate(`/box/${boxId}`);
+    } catch (error) {
+      console.error('Fehler:', error);
+      // Fehlerbehandlung, z.B. Anzeige einer Fehlermeldung
+    }
   };
 
   return (

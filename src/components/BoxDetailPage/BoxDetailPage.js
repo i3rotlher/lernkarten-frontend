@@ -1,35 +1,109 @@
-import React from 'react';
-import './BoxDetailPage.css'; // Stellen Sie sicher, dass Sie eine entsprechende CSS-Datei erstellen
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import './BoxDetailPage.css';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const BoxDetailPage = () => {
+  const [box, setBox] = useState(null);
+  const [error, setError] = useState('');
   const navigate = useNavigate();
+  const { boxId } = useParams();
+
+  const parseJwt = (token) => {
+    try {
+      const decoded = JSON.parse(atob(token.split('.')[1]));
+      return decoded.sub; // oder ein anderer Schlüssel, der die Benutzer-ID enthält
+    } catch (e) {
+      return null;
+    }
+  };
+  
+
+  useEffect(() => {
+    const fetchBoxDetails = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const userId = parseJwt(token);
+    
+        if (!userId) {
+          throw new Error('Benutzer-ID nicht gefunden');
+        }
+    
+        const response = await fetch(`http://localhost:8080/karteiboxen/user/${userId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+  
+        if (!response.ok) {
+          throw new Error('Fehler beim Laden der Boxen');
+        }
+  
+        const boxes = await response.json();
+        const foundBox = boxes.find(b => b.id.toString() === boxId);
+  
+        if (foundBox) {
+          const progressResponse = await fetch(`http://localhost:8080/karteiboxen/${foundBox.id}/progress`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+  
+          if (!progressResponse.ok) {
+            throw new Error('Fehler beim Laden des Fortschritts');
+          }
+  
+          const progress = await progressResponse.text();
+          setBox({ ...foundBox, progress: progress });
+        } else {
+          throw new Error('Box nicht gefunden');
+        }
+      } catch (error) {
+        console.error('Fehler:', error);
+        setError('Fehler beim Laden der Boxdetails');
+      }
+    };
+  
+    fetchBoxDetails();
+  }, [boxId, navigate]);
 
   const handleLearnClick = () => {
-    // Logik zum Starten des Lernprozesses
+    navigate(`/learn/${boxId}`);
   };
 
   const handleAddCardClick = () => {
-    navigate('/create-card');
+    navigate(`/create-card/${boxId}`);
   };
 
-  const handleDeleteBoxClick = () => {
-    // Bestätigungsdialog anzeigen und bei Bestätigung:
-    // Logik zum Löschen der Box
-    navigate('/');
+  const handleDeleteBoxClick = async () => {
+    // Optional: Bestätigungsdialog anzeigen
+
+    try {
+      const response = await fetch(`http://localhost:8080/karteiboxen/${boxId}`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Fehler beim Löschen der Box');
+      }
+
+      navigate('/');
+    } catch (error) {
+      console.error('Fehler:', error);
+      setError('Fehler beim Löschen der Box');
+    }
   };
-  // Beispiel-Box-Daten, ersetzen Sie diese durch echte Daten aus Ihrem Backend
-  const box = {
-    id: 1,
-    name: 'Boxname',
-    description: 'Beschreibung der Box',
-    progress: 75
-  };
+
+  if (!box) {
+    return <div>Laden...</div>;
+  }
 
   return (
     <div className="box-detail-container">
       <header className="box-header">
-        <a href="/">&#x2190;</a> {/* Zurück-Pfeil */}
+        <a href="/" onClick={(e) => { e.preventDefault(); navigate('/'); }}>&#x2190;</a>
         <h1>{box.name}</h1>
         <div className="progress">
           <div className="progress-bar" style={{ width: `${box.progress}%` }}>
@@ -37,12 +111,13 @@ const BoxDetailPage = () => {
           </div>
         </div>
       </header>
-      <p>{box.description}</p>
+      <p>{box.beschreibung}</p>
       <div className="actions">
-        <button className="action-btn">Box Lernen</button>
-        <button className="action-btn">Karteikarte hinzufügen</button>
-        <button className="action-btn delete">Box Löschen</button>
+        <button className="action-btn" onClick={handleLearnClick}>Box Lernen</button>
+        <button className="action-btn" onClick={handleAddCardClick}>Karteikarte hinzufügen</button>
+        <button className="action-btn delete" onClick={handleDeleteBoxClick}>Box Löschen</button>
       </div>
+      {error && <div className="error-message">{error}</div>}
     </div>
   );
 };

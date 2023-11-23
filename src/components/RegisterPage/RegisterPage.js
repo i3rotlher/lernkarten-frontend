@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
-import './RegisterPage.css'; // Stellen Sie sicher, dass Sie eine entsprechende CSS-Datei erstellen
+import './RegisterPage.css';
+import { useNavigate } from 'react-router-dom';
 
-const RegisterPage = ({ onRegisterSuccess }) => {
+const RegisterPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
@@ -13,11 +16,31 @@ const RegisterPage = ({ onRegisterSuccess }) => {
     setPassword(event.target.value);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log('Registriert mit:', email, password);
-    // Hier würden Sie die Registrierungslogik mit Ihrem Backend integrieren.
-    // onRegisterSuccess(); // Aufrufen, wenn die Registrierung erfolgreich ist.
+    setError('');
+
+    try {
+      const response = await fetch('http://localhost:8080/users/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email, password })
+      });
+      
+      if (response.ok) {
+        // Sie könnten die Antwort des Backend auswerten, um zu bestätigen, dass die Registrierung erfolgreich war
+        navigate('/'); // Umleitung zur Homepage bei erfolgreicher Registrierung
+      } else {
+        // Wenn es einen Fehler gab, können Sie die Fehlermeldung aus der Antwort extrahieren
+        const data = await response.json();
+        setError(data.message);
+      }
+    } catch (error) {
+      // Hier fangen Sie Netzwerkfehler und andere unerwartete Fehler ab
+      setError('Es gab einen Fehler bei der Registrierung.');
+    }
   };
 
   return (
@@ -39,6 +62,7 @@ const RegisterPage = ({ onRegisterSuccess }) => {
           required
         />
         <button type="submit">Registrieren</button>
+        {error && <div className="error-message">{error}</div>}
       </form>
     </div>
   );
