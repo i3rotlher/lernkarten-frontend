@@ -18,13 +18,13 @@ const CreateCardPage = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
+  
     const newCard = {
       frage: question,
       antwort: answer,
       karteiboxId: boxId, // Die Box-ID aus den URL-Parametern
     };
-
+  
     try {
       const response = await fetch('http://localhost:8080/karteikarten/', {
         method: 'POST',
@@ -34,23 +34,25 @@ const CreateCardPage = () => {
         },
         body: JSON.stringify(newCard)
       });
-
+  
       if (!response.ok) {
         throw new Error('Fehler beim Hinzufügen der Karteikarte');
       }
-
-      // Erfolgsmeldung oder Weiterleitung
+  
+      // Erfolgsmeldung anzeigen
+      alert('Karteikarte erfolgreich hinzugefügt!');
       navigate(`/box/${boxId}`);
     } catch (error) {
       console.error('Fehler:', error);
-      // Fehlerbehandlung, z.B. Anzeige einer Fehlermeldung
+      // Anzeigen einer Fehlermeldung
+      alert('Fehler beim Hinzufügen der Karteikarte: ' + error.message);
     }
-  };
+  };  
 
   return (
     <div className="create-card-container">
       <header className="create-card-header">
-        <a href="/">&#x2190; Karte erstellen</a> {/* Zurück-Pfeil */}
+      <a href="#" onClick={(e) => { e.preventDefault(); navigate(-1); }}>&#x2190; Zurück</a>
       </header>
       <form onSubmit={handleSubmit} className="create-card-form">
         <input

@@ -75,26 +75,29 @@ const BoxDetailPage = () => {
   };
 
   const handleDeleteBoxClick = async () => {
-    // Optional: Bestätigungsdialog anzeigen
+    // Anzeigen eines Bestätigungsdialogs vor dem Löschen
+    if (window.confirm('Sind Sie sicher, dass Sie diese Box löschen möchten?')) {
+      try {
+        const response = await fetch(`http://localhost:8080/karteiboxen/${boxId}`, {
+          method: 'DELETE',
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        });
 
-    try {
-      const response = await fetch(`http://localhost:8080/karteiboxen/${boxId}`, {
-        method: 'DELETE',
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-      });
+        if (!response.ok) {
+          throw new Error('Fehler beim Löschen der Box');
+        }
 
-      if (!response.ok) {
-        throw new Error('Fehler beim Löschen der Box');
+        // Weiterleitung zur Homepage nach dem Löschen
+        navigate('/');
+      } catch (error) {
+        console.error('Fehler:', error);
+        // Fehlerbehandlung ...
       }
-
-      navigate('/');
-    } catch (error) {
-      console.error('Fehler:', error);
-      setError('Fehler beim Löschen der Box');
     }
   };
+
 
   if (!box) {
     return <div>Laden...</div>;

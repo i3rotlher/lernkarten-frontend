@@ -64,8 +64,8 @@ const BoxAddPage = () => {
   return (
     <div className="box-add-container">
       <header className="box-add-header">
-        <a href="/">&#x2190;</a> {/* Zurück-Pfeil */}
-        <h1>Box Erstellen</h1>
+      <button onClick={() => navigate('/')} className="back-button">&#x2190;</button>
+      <h1>Box Erstellen</h1>
       </header>
       <form onSubmit={handleSubmit} className="box-add-form">
         <input

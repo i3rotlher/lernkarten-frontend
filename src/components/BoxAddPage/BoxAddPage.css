@@ -42,4 +42,13 @@
   .box-add-form button:hover {
     background-color: #45a049;
   }
+
+  .back-button {
+    background: none;
+    border: none;
+    color: #000;
+    font-size: 24px;
+    cursor: pointer;
+  }
+  
   
