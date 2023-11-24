@@ -68,7 +68,7 @@ const LearnPage = () => {
   };
 
   if (cards.length === 0) {
-    return <div>Keine Karten in dieser Box oder Laden...</div>;
+    return <div>Keine weiteren Karten zu lernen in dieser Box</div>;
   }
 
   if (currentCardIndex >= cards.length) {
