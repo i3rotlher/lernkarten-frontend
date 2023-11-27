@@ -1,11 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './BoxAddPage.css';
 import { useNavigate } from 'react-router-dom';
 
 const BoxAddPage = () => {
   const [boxName, setBoxName] = useState('');
   const [description, setDescription] = useState('');
+  const [darkMode, setDarkMode] = useState(localStorage.getItem('darkMode') === 'true');
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (darkMode) {
+      document.body.classList.add('dark-mode');
+    } else {
+      document.body.classList.remove('dark-mode');
+    }
+  }, [darkMode]);
 
   const parseJwt = (token) => {
     try {

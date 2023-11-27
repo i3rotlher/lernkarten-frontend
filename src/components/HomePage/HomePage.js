@@ -5,17 +5,16 @@ import { useNavigate } from 'react-router-dom';
 const HomePage = () => {
   const [boxes, setBoxes] = useState([]);
   const [error, setError] = useState('');
+  const [darkMode, setDarkMode] = useState(localStorage.getItem('darkMode') === 'true');
   const navigate = useNavigate();
 
-  const parseJwt = (token) => {
-    try {
-      return JSON.parse(atob(token.split('.')[1]));
-    } catch (e) {
-      return null;
-    }
-  };  
-
   useEffect(() => {
+    if (darkMode) {
+      document.body.classList.add('dark-mode');
+    } else {
+      document.body.classList.remove('dark-mode');
+    }
+
     const token = localStorage.getItem('token');
     if (!token) {
       navigate('/login');
@@ -25,7 +24,15 @@ const HomePage = () => {
         fetchBoxes(user.sub);
       }
     }
-  }, [navigate]);
+  }, [navigate, darkMode]);
+
+  const parseJwt = (token) => {
+    try {
+      return JSON.parse(atob(token.split('.')[1]));
+    } catch (e) {
+      return null;
+    }
+  };  
 
   const fetchBoxes = async (userId) => {
     try {

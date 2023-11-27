@@ -1,12 +1,21 @@
-import React, { useState } from 'react';
-import './CreateCardPage.css'; // Stellen Sie sicher, dass Sie eine entsprechende CSS-Datei erstellen
+import React, { useState, useEffect } from 'react';
+import './CreateCardPage.css';
 import { useNavigate, useParams } from 'react-router-dom';
 
 const CreateCardPage = () => {
   const [question, setQuestion] = useState('');
   const [answer, setAnswer] = useState('');
+  const [darkMode, setDarkMode] = useState(localStorage.getItem('darkMode') === 'true');
   const navigate = useNavigate();
   const { boxId } = useParams();
+
+  useEffect(() => {
+    if (darkMode) {
+      document.body.classList.add('dark-mode');
+    } else {
+      document.body.classList.remove('dark-mode');
+    }
+  }, [darkMode]);
 
   const handleQuestionChange = (event) => {
     setQuestion(event.target.value);
@@ -22,7 +31,7 @@ const CreateCardPage = () => {
     const newCard = {
       frage: question,
       antwort: answer,
-      karteiboxId: boxId, // Die Box-ID aus den URL-Parametern
+      karteiboxId: boxId,
     };
   
     try {
@@ -39,12 +48,10 @@ const CreateCardPage = () => {
         throw new Error('Fehler beim Hinzufügen der Karteikarte');
       }
   
-      // Erfolgsmeldung anzeigen
       alert('Karteikarte erfolgreich hinzugefügt!');
       navigate(`/box/${boxId}`);
     } catch (error) {
       console.error('Fehler:', error);
-      // Anzeigen einer Fehlermeldung
       alert('Fehler beim Hinzufügen der Karteikarte: ' + error.message);
     }
   };  
@@ -52,7 +59,7 @@ const CreateCardPage = () => {
   return (
     <div className="create-card-container">
       <header className="create-card-header">
-      <a href="#" onClick={(e) => { e.preventDefault(); navigate(-1); }}>&#x2190; Zurück</a>
+        <a href="#" onClick={(e) => { e.preventDefault(); navigate(-1); }}>&#x2190; Zurück</a>
       </header>
       <form onSubmit={handleSubmit} className="create-card-form">
         <input

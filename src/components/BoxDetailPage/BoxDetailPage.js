@@ -5,6 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 const BoxDetailPage = () => {
   const [box, setBox] = useState(null);
   const [error, setError] = useState('');
+  const [darkMode, setDarkMode] = useState(localStorage.getItem('darkMode') === 'true');
   const navigate = useNavigate();
   const { boxId } = useParams();
 
@@ -19,6 +20,11 @@ const BoxDetailPage = () => {
   
 
   useEffect(() => {
+    if (darkMode) {
+      document.body.classList.add('dark-mode');
+    } else {
+      document.body.classList.remove('dark-mode');
+    }
     const fetchBoxDetails = async () => {
       try {
         const token = localStorage.getItem('token');
@@ -64,7 +70,7 @@ const BoxDetailPage = () => {
     };
   
     fetchBoxDetails();
-  }, [boxId, navigate]);
+  }, [boxId, navigate, darkMode]);
 
   const handleLearnClick = () => {
     navigate(`/learn/${boxId}`);

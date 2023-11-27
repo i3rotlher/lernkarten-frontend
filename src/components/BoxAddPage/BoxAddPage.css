@@ -1,54 +1,70 @@
 .box-add-container {
-    font-family: 'Arial', sans-serif;
-    padding: 20px;
-  }
-  
-  .box-add-header {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 20px;
-  }
-  
-  .box-add-header a {
-    text-decoration: none;
-    color: #000;
-    font-size: 24px;
-  }
-  
-  .box-add-form {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-  
-  .box-add-form input,
-  .box-add-form textarea {
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ddd;
-    font-size: 16px;
-  }
-  
-  .box-add-form button {
-    padding: 10px;
-    border-radius: 5px;
-    border: none;
-    background-color: #4CAF50;
-    color: white;
-    cursor: pointer;
-  }
-  
-  .box-add-form button:hover {
-    background-color: #45a049;
+  font-family: 'Arial', sans-serif;
+  padding: 20px;
+}
+
+.box-add-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.box-add-header a {
+  text-decoration: none;
+  color: #000;
+  font-size: 24px;
+}
+
+.box-add-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.box-add-form input,
+.box-add-form textarea {
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  font-size: 16px;
+}
+
+.box-add-form button {
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  background-color: #4CAF50;
+  color: white;
+  cursor: pointer;
+}
+
+.box-add-form button:hover {
+  background-color: #45a049;
+}
+
+.back-button {
+  background: none;
+  border: none;
+  color: #000;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+
+  /* Dark mode styles */
+  body.dark-mode {
+      background-color: #121212;
+      color: #ffffff;
   }
 
-  .back-button {
-    background: none;
-    border: none;
-    color: #000;
-    font-size: 24px;
-    cursor: pointer;
+  body.dark-mode .App-header {
+      background-color: #1a1a1a;
   }
-  
+
+  body.dark-mode .App-link {
+      color: #9e9e9e;
+  }
+
+  /* Add other dark mode specific styles here */
   

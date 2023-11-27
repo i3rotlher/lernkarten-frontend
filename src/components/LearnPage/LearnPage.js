@@ -5,10 +5,17 @@ import { useNavigate, useParams } from 'react-router-dom';
 const LearnPage = () => {
   const [cards, setCards] = useState([]);
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
+  const [darkMode, setDarkMode] = useState(localStorage.getItem('darkMode') === 'true');
   const navigate = useNavigate();
   const { boxId } = useParams();
 
   useEffect(() => {
+    if (darkMode) {
+      document.body.classList.add('dark-mode');
+    } else {
+      document.body.classList.remove('dark-mode');
+    }
+
     const fetchCards = async () => {
       try {
         const response = await fetch(`http://localhost:8080/karteikarten/karteibox/${boxId}`, {
@@ -22,7 +29,6 @@ const LearnPage = () => {
         }
 
         const cardsData = await response.json();
-        // Filtern Sie die Karten, um nur diejenigen zu behalten, die noch nicht gewusst sind
         const unknownCards = cardsData.filter(card => !card.known);
         setCards(unknownCards);
       } catch (error) {
@@ -32,7 +38,7 @@ const LearnPage = () => {
     };
 
     fetchCards();
-  }, [boxId, navigate]);
+  }, [boxId, navigate, darkMode]);
 
   const markCardAsKnown = async (cardId, known) => {
     try {
@@ -51,7 +57,6 @@ const LearnPage = () => {
       setCurrentCardIndex(currentCardIndex + 1);
     } catch (error) {
       console.error('Fehler:', error);
-      // Optional: Fehlerbehandlung
     }
   };
 
@@ -62,7 +67,6 @@ const LearnPage = () => {
   };
 
   const handleUnknown = () => {
-    // Einfach zur nächsten Karte navigieren, ohne sie als "gewusst" zu markieren
     console.log('Karteikarte als nicht gewusst markiert');
     setCurrentCardIndex(currentCardIndex + 1);
   };

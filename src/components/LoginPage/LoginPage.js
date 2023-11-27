@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './LoginPage.css';
 import { useNavigate } from 'react-router-dom';
 
@@ -6,7 +6,16 @@ const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [darkMode, setDarkMode] = useState(localStorage.getItem('darkMode') === 'true');
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (darkMode) {
+      document.body.classList.add('dark-mode');
+    } else {
+      document.body.classList.remove('dark-mode');
+    }
+  }, [darkMode]);
 
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
@@ -43,8 +52,17 @@ const LoginPage = () => {
     }
   };
 
+  const toggleDarkMode = () => {
+    localStorage.setItem('darkMode', !darkMode);
+    setDarkMode(!darkMode);
+  };
+
   return (
     <div className="login-container">
+      <label className="dark-mode-switch">
+        Dark Mode:
+        <input type="checkbox" checked={darkMode} onChange={toggleDarkMode} />
+      </label>
       <h1>LERNKARTENAPP</h1>
       <form onSubmit={handleSubmit} className="login-form">
         <input

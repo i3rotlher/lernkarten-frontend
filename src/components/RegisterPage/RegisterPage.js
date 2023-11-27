@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './RegisterPage.css';
 import { useNavigate } from 'react-router-dom';
 
@@ -6,7 +6,16 @@ const RegisterPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [darkMode, setDarkMode] = useState(localStorage.getItem('darkMode') === 'true');
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (darkMode) {
+      document.body.classList.add('dark-mode');
+    } else {
+      document.body.classList.remove('dark-mode');
+    }
+  }, [darkMode]);
 
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
@@ -30,15 +39,12 @@ const RegisterPage = () => {
       });
       
       if (response.ok) {
-        // Sie könnten die Antwort des Backend auswerten, um zu bestätigen, dass die Registrierung erfolgreich war
-        navigate('/'); // Umleitung zur Homepage bei erfolgreicher Registrierung
+        navigate('/');
       } else {
-        // Wenn es einen Fehler gab, können Sie die Fehlermeldung aus der Antwort extrahieren
         const data = await response.json();
         setError(data.message);
       }
     } catch (error) {
-      // Hier fangen Sie Netzwerkfehler und andere unerwartete Fehler ab
       setError('Es gab einen Fehler bei der Registrierung.');
     }
   };
